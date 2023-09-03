@@ -14,7 +14,16 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@micro/auth": ["libs/auth/src/index.ts"],
+      "@micro/config": ["libs/config/src/index.ts"],
+      "@micro/contracts": ["libs/contracts/src/index.ts"],
+      "@micro/database": ["libs/database/src/index.ts"],
+      "@micro/dto": ["libs/dto/src/index.ts"],
+      "@micro/interfaces": ["libs/interfaces/src/index.ts"],
+      "@micro/models": ["libs/models/src/index.ts"],
+      "@micro/repositories": ["libs/repositories/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
