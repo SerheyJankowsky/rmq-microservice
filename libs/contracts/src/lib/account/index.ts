@@ -6,6 +6,7 @@ import {
   IsString,
   MinLength,
 } from 'class-validator';
+import { UserId } from '@micro/interfaces';
 
 export namespace AccountLogin {
   export const topic = 'account.login.query';
@@ -56,5 +57,23 @@ export namespace AccountRegister {
 
   export class Response {
     access_token!: string;
+  }
+}
+
+export namespace UserInfo {
+  export const topic = 'account.info.query';
+
+  export class Request {
+    id!: string;
+  }
+
+  export class Response {
+    username!: string;
+    email!: string;
+    password!: string;
+    firstName!: string;
+    lastName!: string;
+    phoneNumber!: string;
+    role!: Role[];
   }
 }

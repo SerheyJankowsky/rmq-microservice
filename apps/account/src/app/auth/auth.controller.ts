@@ -1,6 +1,6 @@
 import { Body, Controller } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { IUserOmit } from '@micro/interfaces';
+import { UserId } from '@micro/interfaces';
 import { AccountLogin, AccountRegister } from '@micro/contracts';
 import { RMQRoute } from 'nestjs-rmq';
 
@@ -11,7 +11,7 @@ export class AuthController {
   async register(
     @Body() dto: AccountRegister.Request
   ): Promise<AccountRegister.Response> {
-    const user: IUserOmit = await this.authService.register(dto);
+    const user: UserId = await this.authService.register(dto);
     return this.authService.login(user);
   }
 
@@ -19,10 +19,7 @@ export class AuthController {
   async login(
     @Body() { password, email }: AccountLogin.Request
   ): Promise<AccountLogin.Response> {
-    const user: IUserOmit = await this.authService.validateUser(
-      email,
-      password
-    );
+    const user: UserId = await this.authService.validateUser(email, password);
     return this.authService.login(user);
   }
 }

@@ -30,6 +30,7 @@ export class AuthController {
         AccountLogin.Response
       >(AccountLogin.topic, dto);
     } catch (e) {
+      console.log(e);
       if (e instanceof Error) {
         throw new UnauthorizedException(e.message);
       }

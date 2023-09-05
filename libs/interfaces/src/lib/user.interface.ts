@@ -14,4 +14,4 @@ export interface IUser {
   subscription?: Subscriptions;
 }
 
-export type IUserOmit = Omit<IUser, 'password'>;
+export type UserId = Pick<IUser, 'id'>;

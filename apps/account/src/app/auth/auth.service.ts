@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UserEntity, UserRepository } from '@micro/repositories';
 import { Role } from '@prisma/client';
-import { IUser, IUserOmit } from '@micro/interfaces';
+import { IUser, UserId } from '@micro/interfaces';
 import { JwtService } from '@nestjs/jwt';
 import { AccountRegister } from '@micro/contracts';
 
@@ -11,7 +11,7 @@ export class AuthService {
     private readonly userRepository: UserRepository,
     private readonly jwtService: JwtService
   ) {}
-  async register(dto: AccountRegister.Request): Promise<IUserOmit> {
+  async register(dto: AccountRegister.Request): Promise<UserId> {
     const exist = await this.userRepository.findUser(dto.email);
     if (exist) {
       throw new HttpException('User is registered', HttpStatus.CONFLICT);
@@ -27,11 +27,10 @@ export class AuthService {
     });
     await newUser.hashPassword(dto.password);
     const user: IUser = await this.userRepository.createUser(newUser);
-    delete user['password'];
-    return user;
+    return { id: user.id };
   }
 
-  async validateUser(email: string, password: string): Promise<IUserOmit> {
+  async validateUser(email: string, password: string): Promise<UserId> {
     const exist: IUser = (await this.userRepository.findUser(email)) as IUser;
     if (!exist) {
       throw new HttpException('User is not exist', HttpStatus.BAD_REQUEST);
@@ -41,11 +40,9 @@ export class AuthService {
     if (!isValidPassword) {
       throw new HttpException('invalid credentials', HttpStatus.UNAUTHORIZED);
     }
-    const executeFields = { ...exist };
-    delete executeFields['password'];
-    return executeFields;
+    return { id: userEntity.id };
   }
-  async login(user: IUserOmit) {
+  async login(user: UserId) {
     return {
       access_token: await this.jwtService.signAsync(user),
     };
