@@ -68,6 +68,7 @@ export namespace UserInfo {
   }
 
   export class Response {
+    id!: string;
     username!: string;
     email!: string;
     password!: string;

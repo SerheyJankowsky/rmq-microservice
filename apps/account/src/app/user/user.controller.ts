@@ -9,6 +9,6 @@ export class UserController {
   @RMQRoute(UserInfo.topic)
   async getUserInfo(@Body() dto: UserInfo.Request): Promise<UserInfo.Response> {
     const user = await this.userService.getInfo(dto.id);
-    return user;
+    return user as UserInfo.Response;
   }
 }
