@@ -1,13 +1,14 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UserEntity, UserRepository } from '@micro/repositories';
 import { UserInfo } from '@micro/contracts';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
   async getInfo(id: string): Promise<UserEntity> {
-    const user = (await this.userRepository.findUser(id)) as UserInfo.Response;
+    const user: User = (await this.userRepository.findUser(id)) as User;
     if (!user) {
       throw new HttpException('user doesnt exist', HttpStatus.BAD_REQUEST);
     }
