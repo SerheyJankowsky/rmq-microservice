@@ -1,4 +1,4 @@
-import { Role, Subscriptions } from '@prisma/client';
+import { Role } from '@prisma/client';
 
 export interface IUser {
   id?: string;
@@ -11,7 +11,17 @@ export interface IUser {
   createdAt?: Date;
   updatedAt?: Date;
   role: Role[];
-  subscription?: Subscriptions;
+  courses?: IUserCourses[];
 }
 
 export type UserId = Pick<IUser, 'id'>;
+export enum PurchaseState {
+  Started = 'Started',
+  Waiting = 'Waiting',
+  Done = 'Done',
+  Canceled = 'Canceled',
+}
+export interface IUserCourses {
+  id: string;
+  purchaseState: PurchaseState;
+}

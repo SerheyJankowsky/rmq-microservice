@@ -6,7 +6,7 @@ import {
   IsString,
   MinLength,
 } from 'class-validator';
-import { UserId } from '@micro/interfaces';
+import { IUserCourses, UserId } from '@micro/interfaces';
 
 export namespace AccountLogin {
   export const topic = 'account.login.query';
@@ -76,5 +76,15 @@ export namespace UserInfo {
     lastName!: string;
     phoneNumber!: string;
     role!: Role[];
+  }
+}
+
+export namespace UserCourses {
+  export const topic = 'account.courses.query';
+  export class Request {
+    id!: string;
+  }
+  export class Response {
+    courses!: IUserCourses[];
   }
 }

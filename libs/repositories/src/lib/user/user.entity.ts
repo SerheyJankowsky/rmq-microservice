@@ -1,5 +1,5 @@
-import { IUser } from '@micro/interfaces';
-import { Role, Subscriptions } from '@prisma/client';
+import { IUser, IUserCourses } from '@micro/interfaces';
+import { Role } from '@prisma/client';
 import { compare, genSalt, hash } from 'bcryptjs';
 
 export class UserEntity implements IUser {
@@ -13,7 +13,7 @@ export class UserEntity implements IUser {
   createdAt?: Date;
   updatedAt?: Date;
   role: Role[];
-  subscription?: Subscriptions;
+  courses?: IUserCourses[];
 
   constructor(user: IUser) {
     this.id = user.id;
@@ -22,8 +22,8 @@ export class UserEntity implements IUser {
     this.firstName = user.firstName;
     this.lastName = user.lastName;
     this.phoneNumber = user.phoneNumber;
-    this.role = user.role;
-    this.subscription = user.subscription;
+    this.role = user?.role ?? [];
+    this.courses = user?.courses ?? [];
     this.password = user.password;
     this.createdAt = user.createdAt;
     this.updatedAt = user.updatedAt;

@@ -22,7 +22,6 @@ export class AuthService {
       lastName: dto.lastName,
       phoneNumber: dto.phoneNumber,
       role: [Role.BAYER, Role.SELLER],
-      subscription: undefined,
       username: dto.username,
     });
     await newUser.hashPassword(dto.password);
