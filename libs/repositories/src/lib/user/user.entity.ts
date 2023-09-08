@@ -13,7 +13,7 @@ export class UserEntity implements IUser {
   createdAt?: Date;
   updatedAt?: Date;
   role: Role[];
-  courses?: IUserCourses[];
+  courses: IUserCourses[];
 
   constructor(user: IUser) {
     this.id = user.id;
@@ -39,5 +39,30 @@ export class UserEntity implements IUser {
       return compare(password, this.password);
     }
     return null;
+  }
+
+  public getPublicInfo(): IUser {
+    return {
+      email: this.email,
+      firstName: this.firstName,
+      id: this.id,
+      lastName: this.lastName,
+      phoneNumber: this.phoneNumber,
+      role: this.role,
+      username: this.username,
+    };
+  }
+
+  public update(user: IUser) {
+    this.username = user.username;
+    this.email = user.email;
+    this.firstName = user.firstName;
+    this.lastName = user.lastName;
+    this.phoneNumber = user.phoneNumber;
+    return this;
+  }
+
+  public getUserCourses(): IUserCourses[] {
+    return this.courses;
   }
 }

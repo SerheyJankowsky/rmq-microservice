@@ -6,7 +6,7 @@ import {
   IsString,
   MinLength,
 } from 'class-validator';
-import { IUserCourses, UserId } from '@micro/interfaces';
+import { IUser, IUserCourses, UserId } from '@micro/interfaces';
 
 export namespace AccountLogin {
   export const topic = 'account.login.query';
@@ -67,15 +67,14 @@ export namespace UserInfo {
     id!: string;
   }
 
-  export class Response {
-    id!: string;
-    username!: string;
+  export class Response implements IUser {
     email!: string;
-    password!: string;
     firstName!: string;
+    id?: string;
     lastName!: string;
     phoneNumber!: string;
     role!: Role[];
+    username!: string;
   }
 }
 
@@ -86,5 +85,23 @@ export namespace UserCourses {
   }
   export class Response {
     courses!: IUserCourses[];
+  }
+}
+
+export namespace UpdateUser {
+  export const topic = 'account.update_user.command';
+
+  export class Request implements IUser {
+    id!: string;
+    email!: string;
+    firstName!: string;
+    lastName!: string;
+    phoneNumber!: string;
+    role!: Role[];
+    username!: string;
+  }
+
+  export class Response {
+    user!: IUser;
   }
 }

@@ -1,1 +1,1 @@
-export { AccountLogin, AccountRegister, UserInfo } from './lib/account/index';
+export * from './lib/account/index';
