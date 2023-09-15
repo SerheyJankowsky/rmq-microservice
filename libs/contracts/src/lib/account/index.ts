@@ -6,7 +6,8 @@ import {
   IsString,
   MinLength,
 } from 'class-validator';
-import { IUser, IUserCourses, UserId } from '@micro/interfaces';
+import { IUser, IUserCourses, PurchaseState } from '@micro/interfaces';
+import { statusType } from '../payments';
 
 export namespace AccountLogin {
   export const topic = 'account.login.query';
@@ -103,5 +104,31 @@ export namespace UpdateUser {
 
   export class Response {
     user!: IUser;
+  }
+}
+
+export namespace AccountBuyCourse {
+  export const topic = 'account.buy-course.command';
+
+  export class Request {
+    userId!: string;
+    courseId!: string;
+  }
+
+  export class Response {
+    paymentLink!: string;
+  }
+}
+
+export namespace AccountCheckPaymentStatus {
+  export const topic = 'account.check-payment-status.command';
+
+  export class Request {
+    userId!: string;
+    courseId!: string;
+  }
+
+  export class Response {
+    status!: statusType;
   }
 }

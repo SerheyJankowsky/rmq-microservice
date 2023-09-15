@@ -41,26 +41,20 @@ export class UserEntity implements IUser {
     return null;
   }
 
-  public addCourse(id: string) {
-    const exist = this.courses.find((c) => c.id === id);
-    if (exist) {
-      throw new Error('Course is exist in user');
-    }
-    this.courses.push({ id: id, purchaseState: PurchaseState.Started });
-  }
-
-  public deleteCourse(id: string) {
+  public setCourseStatus(id: string, state: PurchaseState) {
     const exist = this.courses.find((c) => c.id === id);
     if (!exist) {
-      throw new Error('Course doesnt exist in user');
+      this.courses.push({ id: id, purchaseState: state });
+      return this;
     }
-    this.courses = this.courses.filter((c) => c.id !== id);
-  }
-
-  public updateCourseStatus(id: string, status: PurchaseState) {
+    if (state === PurchaseState.Canceled) {
+      this.courses = this.courses.filter((c) => c.id !== id);
+      return this;
+    }
     this.courses = this.courses.map((c) =>
-      c.id === id ? { ...c, purchaseState: status } : c
+      c.id === id ? { ...c, purchaseState: state } : c
     );
+    return this;
   }
 
   public getPublicInfo(): IUser {

@@ -1,5 +1,7 @@
 import { BuyCourseSaga } from './buy-course.saga';
 import { UserEntity } from '@micro/repositories';
+import { PurchaseState } from '@micro/interfaces';
+import { statusType } from '@micro/contracts';
 
 export abstract class BuyCourseState {
   private _saga: BuyCourseSaga;
@@ -13,6 +15,9 @@ export abstract class BuyCourseState {
   }
 
   public abstract pay(): Promise<{ paymentLink: string; user: UserEntity }>;
-  public abstract checkPayment(): Promise<{ user: UserEntity }>;
+  public abstract checkPayment(): Promise<{
+    user: UserEntity;
+    status: statusType;
+  }>;
   public abstract cancel(): Promise<{ user: UserEntity }>;
 }
