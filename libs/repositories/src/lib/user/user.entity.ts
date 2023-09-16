@@ -1,6 +1,12 @@
-import { IUser, IUserCourses, PurchaseState } from '@micro/interfaces';
+import {
+  IDomainEvents,
+  IUser,
+  IUserCourses,
+  PurchaseState,
+} from '@micro/interfaces';
 import { Role } from '@prisma/client';
 import { compare, genSalt, hash } from 'bcryptjs';
+import { AccountChangeCourse } from '@micro/contracts';
 
 export class UserEntity implements IUser {
   id?: string;
@@ -14,6 +20,7 @@ export class UserEntity implements IUser {
   updatedAt?: Date;
   role: Role[];
   courses: IUserCourses[];
+  events: IDomainEvents[] = [];
 
   constructor(user: IUser) {
     this.id = user.id;
@@ -41,19 +48,23 @@ export class UserEntity implements IUser {
     return null;
   }
 
-  public setCourseStatus(id: string, state: PurchaseState) {
-    const exist = this.courses.find((c) => c.id === id);
+  public setCourseStatus(courseId: string, state: PurchaseState) {
+    const exist = this.courses.find((c) => c.id === courseId);
     if (!exist) {
-      this.courses.push({ id: id, purchaseState: state });
+      this.courses.push({ id: courseId, purchaseState: state });
       return this;
     }
     if (state === PurchaseState.Canceled) {
-      this.courses = this.courses.filter((c) => c.id !== id);
+      this.courses = this.courses.filter((c) => c.id !== courseId);
       return this;
     }
     this.courses = this.courses.map((c) =>
-      c.id === id ? { ...c, purchaseState: state } : c
+      c.id === courseId ? { ...c, purchaseState: state } : c
     );
+    this.events.push({
+      topic: AccountChangeCourse.topic,
+      data: { courseId, userId: this.id, state },
+    });
     return this;
   }
 

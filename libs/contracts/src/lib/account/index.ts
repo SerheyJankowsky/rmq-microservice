@@ -132,3 +132,14 @@ export namespace AccountCheckPaymentStatus {
     status!: statusType;
   }
 }
+
+export namespace AccountChangeCourse {
+  export const topic = 'account.change-course.event';
+
+  export class Request {
+    userId!: string;
+    courseId!: string;
+
+    state!: PurchaseState;
+  }
+}
